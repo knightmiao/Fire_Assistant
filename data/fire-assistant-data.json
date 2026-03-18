@@ -1,0 +1,106 @@
+{
+  "profile": {
+    "currentAge": 27,
+    "targetRetireAge": 35,
+    "currency": "CNY"
+  },
+  "config": {
+    "swr": 0.04,
+    "expectedReturn": 0.08,
+    "postRetireReturn": 0.06,
+    "inflationRate": 0.03,
+    "rateHKDToCNY": 0.92,
+    "rateUSDToCNY": 7.25,
+    "manualFireTarget": 2500000
+  },
+  "shenzhenTax": {
+    "pension": 0.08,
+    "medical": 0.02,
+    "unemployment": 0.005,
+    "housingFund": 0.12,
+    "taxThreshold": 5000,
+    "housingFundWithdrawRate": 0.8
+  },
+  "assets": [
+    {
+      "type": "cash",
+      "amountCNY": 3440,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "b1by6346q"
+    },
+    {
+      "type": "housing_fund",
+      "amountCNY": 6997,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "pjt57b6oy"
+    },
+    {
+      "type": "stock_a",
+      "amountCNY": 59715,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "1h1oq8pdp"
+    },
+    {
+      "type": "stock_hk",
+      "amountCNY": 20034,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "hyacui71c",
+      "amountOriginal": 21775.99,
+      "currency": "HKD",
+      "rateToCNY": 0.92
+    },
+    {
+      "type": "stock_us",
+      "amountCNY": 26977,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "5mvf7uv38",
+      "amountOriginal": 3720.97,
+      "currency": "USD",
+      "rateToCNY": 7.25
+    },
+    {
+      "type": "fund",
+      "amountCNY": 120000,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "q6gzf8o6w"
+    },
+    {
+      "type": "receivable",
+      "amountCNY": 27050,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "f2m0qu6ju"
+    },
+    {
+      "type": "rsu_unvested",
+      "amountCNY": 50000,
+      "snapshotDate": "2026-03-17",
+      "countInFire": true,
+      "id": "9stzv1u33"
+    }
+  ],
+  "liabilities": [],
+  "salary": {
+    "monthlyGross": 27500,
+    "isAfterTax": false,
+    "raiseRatePerYear": 0.05,
+    "salaryBaseYear": 2026
+  },
+  "bonus": {
+    "amount": 140000,
+    "growsWithSalary": false,
+    "monthsOfSalary": 1
+  },
+  "rsuGrants": [],
+  "expense": {
+    "currentAnnual": 180000,
+    "targetAnnual": 120000
+  },
+  "lastUpdated": "2026-03-18T08:08:58.728Z"
+}

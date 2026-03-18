@@ -1,0 +1,142 @@
+/* FIRE 规划助手 — 宝可梦现代化风格 · 森林 × 海洋 */
+
+:root {
+  /* 森林色板 */
+  --forest-dark: #0f3d12;
+  --forest: #1b5e20;
+  --forest-mid: #2e7d32;
+  --forest-light: #43a047;
+  --forest-pale: #66bb6a;
+  --forest-bg: #a5d6a7;
+  --forest-cream: #c8e6c9;
+  --forest-paper: #e8f5e9;
+
+  /* 海洋色板 */
+  --ocean-dark: #004d40;
+  --ocean: #00695c;
+  --ocean-mid: #00897b;
+  --ocean-light: #26a69a;
+  --ocean-pale: #4db6ac;
+  --ocean-bg: #b2dfdb;
+  --ocean-paper: #e0f2f1;
+
+  /* 主色 */
+  --text: #1b3d1e;
+  --text-h: #0d260f;
+  --text-muted: #2e5c32;
+  --bg: #f0f7f0;
+  --bg-gradient-top: #e8f5e9;
+  --bg-gradient-bottom: #e0f2f1;
+  --border: rgba(30, 94, 35, 0.25);
+  --border-light: rgba(129, 199, 132, 0.5);
+  --card-bg: #ffffff;
+  --card-border: rgba(46, 125, 50, 0.2);
+  --card-shadow: 0 4px 24px rgba(27, 94, 32, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  /* 强调：活力橙 + 海洋青 */
+  --accent: #e65100;
+  --accent-hover: #ff6f00;
+  --accent-bg: rgba(230, 81, 0, 0.1);
+  --accent-border: #bf360c;
+  --accent-glow: rgba(230, 81, 0, 0.35);
+  --ocean-accent: #00897b;
+  --ocean-glow: rgba(0, 137, 123, 0.3);
+  --progress-fill: linear-gradient(90deg, #2e7d32 0%, #43a047 50%, #66bb6a 100%);
+  --progress-glow: rgba(67, 160, 71, 0.4);
+
+  /* 圆角与过渡 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  --transition: 0.2s ease;
+
+  --font-sans: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+
+  font: 16px/1.6 var(--font-sans);
+  letter-spacing: 0.01em;
+  color-scheme: light;
+  color: var(--text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* 宝可梦 Pokopia 风格拼接背景：森林×海洋拼贴图 */
+  background:
+    linear-gradient(165deg, rgba(232, 245, 233, 0.88) 0%, rgba(240, 247, 240, 0.9) 40%, rgba(224, 242, 241, 0.88) 100%),
+    url(/bg-pokopia-collage.svg) center / cover no-repeat fixed;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-h);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  h1 { font-size: 1.25rem; }
+  h2 { font-size: 1.2rem; }
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--forest-dark);
+  background: var(--forest-paper);
+  padding: 0.15em 0.5em;
+}
+
+::selection {
+  background: var(--forest-pale);
+  color: var(--text-h);
+}
