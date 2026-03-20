@@ -455,8 +455,8 @@
   pointer-events: none;
 }
 
-/* ========== 数据文件管理 ========== */
-.data-file-manager {
+/* ========== 云端保存条 + Toast ========== */
+.cloud-save-bar {
   margin-bottom: 1.25rem;
   padding: 1rem 1.25rem;
   background: linear-gradient(145deg, var(--ocean-paper) 0%, var(--ocean-bg) 100%);
@@ -465,13 +465,94 @@
   box-shadow: 0 4px 16px rgba(0, 105, 92, 0.08);
 }
 
-.data-file-actions {
+.cloud-save-row {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
   margin-bottom: 0.5rem;
 }
 
+.cloud-save-user {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cloud-save-email {
+  flex: 1 1 12rem;
+  min-width: 10rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 105, 92, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  font: inherit;
+  color: var(--text);
+}
+
+.cloud-save-email:focus {
+  outline: 2px solid var(--ocean-mid);
+  outline-offset: 1px;
+}
+
+.cloud-save-hint {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.cloud-save-hint code {
+  padding: 0.2em 0.45em;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 137, 123, 0.2);
+  font-size: 0.85em;
+}
+
+.app-toast {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  max-width: min(92vw, 28rem);
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  animation: app-toast-in 0.22s ease;
+}
+
+@keyframes app-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.app-toast--success {
+  background: var(--forest-paper);
+  color: var(--forest-dark);
+  border: 1px solid var(--forest-light);
+}
+
+.app-toast--error {
+  background: #ffebee;
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
+}
+
+/* 内页提示（资产表等） */
 .data-file-hint {
   font-size: 0.875rem;
   color: var(--text-muted);
@@ -485,30 +566,4 @@
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(0, 137, 123, 0.2);
   font-size: 0.85em;
-}
-
-.data-file-error {
-  font-size: 0.9rem;
-  color: #b71c1c;
-  margin: 0.5rem 0 0;
-  font-weight: 500;
-}
-
-.data-file-banner {
-  margin-top: 0.85rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid var(--ocean);
-  border-radius: var(--radius-md);
-  box-shadow: 0 2px 12px rgba(0, 105, 92, 0.1);
-}
-
-.data-file-banner p {
-  margin: 0 0 0.5rem;
-  font-size: 0.9rem;
-}
-
-.data-file-banner-actions {
-  display: flex;
-  gap: 0.5rem;
 }

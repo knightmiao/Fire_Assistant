@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { DataFileManager } from './DataFileManager';
+import { CloudSaveBar } from './CloudSaveBar';
 import { IconDashboard, IconProfile, IconAssets, IconIncome } from './PixelIcons';
 
 const nav = [
@@ -30,7 +30,7 @@ export function Layout() {
         </nav>
       </header>
       <main className="main">
-        <DataFileManager />
+        <CloudSaveBar />
         <Outlet />
       </main>
     </div>
