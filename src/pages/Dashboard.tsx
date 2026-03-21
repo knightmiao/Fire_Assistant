@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react';
+import { CloudSaveBar } from '../components/CloudSaveBar';
 import { useFireStore } from '../store/fireStore';
 import { fireTarget, netWorthCountInFire, projectToFireMonthly } from '../lib/fireCalc';
 
@@ -13,68 +14,86 @@ export function Dashboard() {
     state.config.swr,
     state.config.manualFireTarget
   );
-  const hasManualTarget = (state.config.manualFireTarget ?? 0) > 0;
   const progress = target > 0 ? Math.min(100, (netWorth / target) * 100) : 0;
   const projection = projectToFireMonthly(state);
+  const badgeAlign = alignBubbleOnProgress(progress);
 
   return (
     <div className="page">
+      <CloudSaveBar />
       <h2>FIRE 看板</h2>
 
       <section className="card">
-        <h3>关键数字</h3>
-        <dl className="key-figures">
-          <div>
-            <dt>当前净资产</dt>
-            <dd>{formatCNY(netWorth)}</dd>
-          </div>
-          <div>
-            <dt>
-              FIRE 目标
-              {hasManualTarget ? '（手动）' : `（${state.config.swr * 100}% 法则）`}
-            </dt>
-            <dd>{formatCNY(target)}</dd>
-          </div>
-          <div>
-            <dt>进度</dt>
-            <dd>{progress.toFixed(1)}%</dd>
-          </div>
-          {projection.yearly.length > 0 && (
-            <>
-              <div>
-                <dt>预计达成时间</dt>
-                <dd>{projection.fireYear} 年 {projection.fireMonth} 月</dd>
+        <h3>关键数字与进度</h3>
+        {target > 0 ? (
+          <div className="fire-goal-scale" aria-label="从零到 FIRE 目标的进度">
+            <div className="fire-goal-scale-track-area">
+              <div
+                className="fire-goal-scale-badge fire-goal-scale-badge--pct"
+                style={{ left: badgeAlign.left, transform: badgeAlign.transform }}
+              >
+                {progress.toFixed(1)}%
               </div>
-              <div>
-                <dt>达成时年龄</dt>
-                <dd>{projection.fireAge} 岁</dd>
+              <div className="fire-goal-scale-bar">
+                <div
+                  className="fire-goal-scale-fill"
+                  style={{
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    flexBasis: `${progress}%`,
+                  }}
+                >
+                  <span className="fire-goal-scale-in-fill" title="当前净资产">
+                    当前{formatCNYCompact(netWorth)}
+                  </span>
+                </div>
+                <div className="fire-goal-scale-remain">
+                  {netWorth < target ? (
+                    <span className="fire-goal-scale-in-remain" title="距离 FIRE 目标">
+                      差{formatCNYCompact(target - netWorth)}
+                    </span>
+                  ) : null}
+                </div>
               </div>
-              <div>
-                <dt>还需</dt>
-                <dd>{projection.yearsToFire.toFixed(1)} 年</dd>
+              <div className="fire-goal-scale-ends">
+                <span>¥0</span>
+                <span>{formatCNYCompact(target)}</span>
               </div>
-            </>
-          )}
-        </dl>
-      </section>
+            </div>
+          </div>
+        ) : (
+          <p className="progress-hint">
+            请先在「FIRE 计划设置」中填写退休后期望年支出等指标，并在「财务数据」中补充资产与收支
+          </p>
+        )}
 
-      <section className="card">
-        <h3>进度条</h3>
-        <p className="progress-percent">当前进度：{progress.toFixed(1)}%</p>
-        <div className="progress-bar-wrap">
-          <div
-            className="progress-bar"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <p className="progress-hint">
-          {hasManualTarget ? '当前使用手动 FIRE 目标。' : null}
-          {target > 0 && netWorth < target
-            ? `还差 ${formatCNY(target - netWorth)} 达到 FIRE 目标`
-            : target > 0 && netWorth >= target
-              ? '已达成 FIRE 目标'
-              : '请先填写「个人与参数」和「收入与支出」中的退休后期望年支出'}
-        </p>
+        {projection.yearly.length > 0 && (
+          <div className="fire-time-merge" aria-label="到达 FIRE 的时间线">
+            <p className="fire-time-merge-title">时间线</p>
+            <div className="fire-time-merge-rail">
+              <div className="fire-time-merge-node fire-time-merge-node--start">
+                <span className="fire-time-merge-dot" />
+                <span>今</span>
+              </div>
+              <div className="fire-time-merge-span">
+                <div className="fire-time-merge-span-line" aria-hidden />
+                <div className="fire-time-merge-span-label">
+                  <strong>{projection.yearsToFire.toFixed(1)}</strong>
+                  <span> 年</span>
+                </div>
+              </div>
+              <div className="fire-time-merge-node fire-time-merge-node--end">
+                <span className="fire-time-merge-dot fire-time-merge-dot--goal" />
+                <div>
+                  <div className="fire-time-merge-end-date">
+                    {projection.fireYear} 年 {projection.fireMonth} 月
+                  </div>
+                  <div className="fire-time-merge-end-age">约 {projection.fireAge} 岁</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {projection.yearly.length > 0 && (
@@ -154,7 +173,25 @@ export function Dashboard() {
   );
 }
 
+/** 表格等场景：带空格的「¥ x.x 万」 */
 function formatCNY(n: number): string {
   if (Number.isNaN(n) || !Number.isFinite(n)) return '—';
   return `¥ ${(n / 10000).toFixed(1)} 万`;
+}
+
+/** 刻度条标签 / 气泡：无空格「¥x.x万」 */
+function formatCNYCompact(n: number): string {
+  if (Number.isNaN(n) || !Number.isFinite(n)) return '—';
+  return `¥${(n / 10000).toFixed(1)}万`;
+}
+
+/** 单气泡对齐填充末端；靠右略早贴边，避免压住右下角目标金额 */
+function alignBubbleOnProgress(progress: number): { left: string; transform: string } {
+  if (progress <= 4) {
+    return { left: '0%', transform: 'translateX(0)' };
+  }
+  if (progress >= 88) {
+    return { left: '100%', transform: 'translateX(-100%)' };
+  }
+  return { left: `${progress}%`, transform: 'translateX(-50%)' };
 }

@@ -200,7 +200,8 @@ export function CloudSaveBar() {
         )}
       </div>
       <p className="cloud-save-hint">
-        登录状态会保存在本机浏览器；重新打开页面后若仍显示「已登录」，可直接点「从云端恢复」拉取最新备份（会覆盖当前页数据）。
+        登录与云端备份仅在本页（FIRE 看板）提供。登录状态保存在本机浏览器；重新打开后若仍显示「已登录」，可直接「从云端恢复」（会覆盖本地数据）。数据表：{' '}
+        <code>fire_app_snapshot</code>。
       </p>
     </div>
   );

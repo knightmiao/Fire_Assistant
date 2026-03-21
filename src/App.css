@@ -101,6 +101,50 @@
   color: var(--forest-dark);
 }
 
+.page-lead {
+  margin-top: -0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ========== 财务数据子导航 ========== */
+.finance-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sub-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.4rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+}
+
+.sub-nav-link {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition);
+}
+
+.sub-nav-link:hover {
+  color: var(--forest);
+  background: var(--forest-paper);
+}
+
+.sub-nav-link.active {
+  color: var(--forest-dark);
+  background: var(--forest-cream);
+  font-weight: 600;
+}
+
 /* ========== 卡片 ========== */
 .card {
   background: var(--card-bg);
@@ -199,12 +243,28 @@
 
 /* ========== 关键数字 ========== */
 .key-figures {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
-.key-figures div {
+.key-figures-row {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.key-figures-row--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 640px) {
+  .key-figures-row--2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.key-figures-row > div {
   padding: 1rem;
   background: linear-gradient(145deg, var(--forest-paper) 0%, var(--forest-cream) 100%);
   border: 1px solid rgba(46, 125, 50, 0.2);
@@ -212,7 +272,7 @@
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.key-figures div:hover {
+.key-figures-row > div:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(46, 125, 50, 0.12);
 }
@@ -234,7 +294,282 @@
   letter-spacing: -0.02em;
 }
 
-/* ========== 进度条 ========== */
+.key-figures-sub {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+/* FIRE 目标刻度条：0 — 当前 — 目标 */
+.fire-goal-scale {
+  margin-bottom: 0;
+}
+
+.fire-goal-scale-rule {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.45;
+}
+
+.fire-goal-scale-track-area {
+  position: relative;
+  padding-top: 2.5rem;
+}
+
+.fire-goal-scale-badge {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: 1px solid rgba(46, 125, 50, 0.35);
+  box-shadow: 0 2px 10px rgba(27, 94, 32, 0.12);
+  pointer-events: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--forest-dark);
+  line-height: 1.2;
+}
+
+.fire-goal-scale-badge--pct {
+  min-width: 2.75rem;
+  text-align: center;
+}
+
+.fire-goal-scale-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: 40px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  background: var(--forest-cream);
+}
+
+.fire-goal-scale-fill {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+  background: var(--progress-fill);
+  box-shadow: 0 0 12px var(--progress-glow);
+  transition: flex-basis 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fire-goal-scale-in-fill {
+  font-size: clamp(0.62rem, 2.4vw, 0.8rem);
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+}
+
+.fire-goal-scale-remain {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0.65rem 0 0.35rem;
+  background: var(--forest-cream);
+}
+
+.fire-goal-scale-in-remain {
+  font-size: clamp(0.62rem, 2.4vw, 0.8rem);
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--forest-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: right;
+}
+
+.fire-goal-scale-ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  padding: 0 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fire-goal-scale-ends span:last-child {
+  text-align: right;
+  color: var(--forest-dark);
+}
+
+.key-figures-after-scale {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--forest-cream);
+}
+
+/* FIRE 时间线：今 — 还需年数 — 预计达成（合并原「还需」「预计达成」） */
+.fire-time-merge {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--forest-cream);
+}
+
+.fire-time-merge-title {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fire-time-merge-rail {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.fire-time-merge-node {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fire-time-merge-node--start {
+  min-width: 2.25rem;
+}
+
+.fire-time-merge-node--end {
+  align-items: flex-end;
+  text-align: right;
+  min-width: 6.5rem;
+  max-width: 42%;
+}
+
+.fire-time-merge-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ocean-mid);
+  box-shadow: 0 0 0 3px var(--ocean-bg);
+  flex-shrink: 0;
+}
+
+.fire-time-merge-dot--goal {
+  background: var(--forest-mid);
+  box-shadow: 0 0 0 3px var(--forest-cream);
+}
+
+.fire-time-merge-span {
+  flex: 1 1 auto;
+  position: relative;
+  min-width: 4rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fire-time-merge-span-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  background: linear-gradient(
+    90deg,
+    var(--ocean-pale) 0%,
+    var(--forest-light) 55%,
+    var(--forest-mid) 100%
+  );
+  border-radius: var(--radius-full);
+  opacity: 0.85;
+}
+
+.fire-time-merge-span-label {
+  position: relative;
+  z-index: 1;
+  padding: 0.4rem 0.75rem;
+  background: var(--card-bg);
+  border: 1px solid rgba(46, 125, 50, 0.22);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  box-shadow: 0 2px 12px rgba(27, 94, 32, 0.08);
+}
+
+.fire-time-merge-span-label strong {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--forest-dark);
+  letter-spacing: -0.02em;
+}
+
+.fire-time-merge-end-date {
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--forest-dark);
+  line-height: 1.25;
+}
+
+.fire-time-merge-end-age {
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+@media (max-width: 520px) {
+  .fire-time-merge-rail {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+  }
+
+  .fire-time-merge-span {
+    order: 2;
+    width: 100%;
+    flex: 1 0 100%;
+    min-height: 2.25rem;
+  }
+
+  .fire-time-merge-node--start {
+    order: 1;
+  }
+
+  .fire-time-merge-node--end {
+    order: 3;
+    max-width: none;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+/* ========== 进度条（其它位置若复用） ========== */
 .progress-bar-wrap {
   height: 28px;
   background: var(--forest-cream);
@@ -242,13 +577,6 @@
   overflow: hidden;
   margin-bottom: 0.5rem;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-}
-
-.progress-percent {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-h);
 }
 
 .progress-bar {
@@ -373,6 +701,19 @@
 .btn.danger:hover {
   background: #ffcdd2;
   border-color: #ef5350;
+}
+
+.btn.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.5rem;
+  min-width: 2.25rem;
+  line-height: 0;
+}
+
+.btn.btn-icon svg {
+  flex-shrink: 0;
 }
 
 /* ========== 列表 ========== */

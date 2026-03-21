@@ -15,7 +15,10 @@ export function Profile() {
 
   return (
     <div className="page">
-      <h2>个人档案与全局参数</h2>
+      <h2>FIRE 计划设置</h2>
+      <p className="hint page-lead">
+        个人档案、安全提取率、通胀、汇率与税务等假设；影响看板目标与预测。
+      </p>
 
       <section className="card">
         <h3>个人档案</h3>

@@ -1,3 +1,4 @@
+import { IconTrash } from '../components/PixelIcons';
 import { useFireStore } from '../store/fireStore';
 import { ASSET_TYPE_LABELS, type AssetType, type AssetItem, type LiabilityItem } from '../types';
 import { netWorthCountInFire } from '../lib/fireCalc';
@@ -164,7 +165,15 @@ export function Assets() {
                   />
                   计入 FIRE
                 </label>
-                <button type="button" className="btn danger" onClick={() => removeAsset(a.id)}>删除</button>
+                <button
+                  type="button"
+                  className="btn danger btn-icon"
+                  onClick={() => removeAsset(a.id)}
+                  aria-label="删除此资产"
+                  title="删除"
+                >
+                  <IconTrash />
+                </button>
               </li>
             );
           })}
@@ -199,7 +208,15 @@ export function Assets() {
                   onChange={(e) => updateLiability(l.id, { name: e.target.value })}
                 />
               </label>
-              <button type="button" className="btn danger" onClick={() => removeLiability(l.id)}>删除</button>
+              <button
+                type="button"
+                className="btn danger btn-icon"
+                onClick={() => removeLiability(l.id)}
+                aria-label="删除此负债"
+                title="删除"
+              >
+                <IconTrash />
+              </button>
             </li>
           ))}
         </ul>
