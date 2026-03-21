@@ -47,7 +47,7 @@ export function Income() {
               checked={salary.isAfterTax}
               onChange={(e) => setSalary({ isAfterTax: e.target.checked })}
             />
-            我填的是税后月薪（不再扣五险一金与个税）
+            是否税后月薪
           </label>
           <label>
             年度调薪比例（如 0.05 = 5%）

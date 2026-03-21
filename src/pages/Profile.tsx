@@ -31,7 +31,7 @@ export function Profile() {
             />
           </label>
           <label>
-            目标退休年龄（0 表示由计算得出）
+            目标退休年龄
             <input
               type="number"
               min={0}
@@ -58,7 +58,7 @@ export function Profile() {
             />
           </label>
           <label>
-            FIRE 目标金额（可选，元）
+            FIRE 目标金额（单位，元）
             <input
               type="number"
               min={0}

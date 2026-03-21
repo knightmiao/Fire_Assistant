@@ -25,7 +25,7 @@ export function Dashboard() {
         <h3>关键数字</h3>
         <dl className="key-figures">
           <div>
-            <dt>当前可投资净资产</dt>
+            <dt>当前净资产</dt>
             <dd>{formatCNY(netWorth)}</dd>
           </div>
           <div>
@@ -80,9 +80,6 @@ export function Dashboard() {
       {projection.yearly.length > 0 && (
         <section className="card">
           <h3>未来几年净资产预测</h3>
-          <p className="hint">
-            按月考：每月 5 号发薪、每年 7 月调薪、每年 2 月春节前发年终奖；月支出 = 年支出 ÷ 12。点击某年可展开/收拢当月度预测。
-          </p>
           <table className="table">
             <thead>
               <tr>
