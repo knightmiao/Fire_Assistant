@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/ToastProvider';
+import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { FinanceLayout } from './pages/FinanceLayout';
 import { Profile } from './pages/Profile';
@@ -13,6 +14,7 @@ function App() {
     <ToastProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { IconDashboard, IconProfile, IconAssets } from './PixelIcons';
 
@@ -31,30 +32,72 @@ const nav: NavItem[] = [
 
 export function Layout() {
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const closeMobile = () => setMobileOpen(false);
+
   return (
-    <div className="layout">
-      <header className="header">
-        <h1 className="logo">FIRE 规划助手</h1>
-        <nav className="nav" aria-label="主导航">
-          {nav.map(({ to, label, Icon, isActive }) => {
-            const active = isActive(location.pathname);
-            return (
-              <Link
-                key={to}
-                to={to}
-                className={active ? 'nav-link active' : 'nav-link'}
-                aria-current={active ? 'page' : undefined}
-              >
-                <Icon />
-                <span>{label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-      </header>
-      <main className="main">
-        <Outlet />
-      </main>
+    <div className="app-shell">
+      <button
+        type="button"
+        className={mobileOpen ? 'sidebar-backdrop sidebar-backdrop--visible' : 'sidebar-backdrop'}
+        aria-label="关闭菜单"
+        onClick={closeMobile}
+      />
+      <aside
+        id="app-sidebar"
+        className={mobileOpen ? 'sidebar sidebar--open' : 'sidebar'}
+        aria-label="侧栏导航"
+      >
+        <div className="sidebar-inner">
+          <Link to="/dashboard" className="sidebar-brand" onClick={closeMobile}>
+            <span className="sidebar-brand-mark" aria-hidden>
+              ◆
+            </span>
+            <span className="sidebar-brand-text">FIRE 规划助手</span>
+          </Link>
+          <nav id="app-sidebar-nav" className="sidebar-nav" aria-label="主导航">
+            {nav.map(({ to, label, Icon, isActive }) => {
+              const active = isActive(location.pathname);
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  className={active ? 'sidebar-link sidebar-link--active' : 'sidebar-link'}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={closeMobile}
+                >
+                  <Icon className="sidebar-link-icon" />
+                  <span>{label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      </aside>
+
+      <div className="shell-inset">
+        <header className="shell-header">
+          <button
+            type="button"
+            className="shell-menu-btn"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="app-sidebar"
+            aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
+          >
+            <span className="shell-menu-icon" aria-hidden>
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+          <span className="shell-header-title">FIRE 规划助手</span>
+        </header>
+        <main className="main">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

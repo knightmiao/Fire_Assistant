@@ -1,65 +1,97 @@
-/* FIRE 规划助手 — 宝可梦现代化风格 · 森林 × 海洋 */
+/* Visual tokens aligned with arhamkhnz/next-shadcn-admin-dashboard default light theme. */
 
 :root {
-  /* 森林色板 */
-  --forest-dark: #0f3d12;
-  --forest: #1b5e20;
-  --forest-mid: #2e7d32;
-  --forest-light: #43a047;
-  --forest-pale: #66bb6a;
-  --forest-bg: #a5d6a7;
-  --forest-cream: #c8e6c9;
-  --forest-paper: #e8f5e9;
-
-  /* 海洋色板 */
-  --ocean-dark: #004d40;
-  --ocean: #00695c;
-  --ocean-mid: #00897b;
-  --ocean-light: #26a69a;
-  --ocean-pale: #4db6ac;
-  --ocean-bg: #b2dfdb;
-  --ocean-paper: #e0f2f1;
-
-  /* 主色 */
-  --text: #1b3d1e;
-  --text-h: #0d260f;
-  --text-muted: #2e5c32;
-  --bg: #f0f7f0;
-  --bg-gradient-top: #e8f5e9;
-  --bg-gradient-bottom: #e0f2f1;
-  --border: rgba(30, 94, 35, 0.25);
-  --border-light: rgba(129, 199, 132, 0.5);
-  --card-bg: #ffffff;
-  --card-border: rgba(46, 125, 50, 0.2);
-  --card-shadow: 0 4px 24px rgba(27, 94, 32, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-
-  /* 强调：活力橙 + 海洋青 */
-  --accent: #e65100;
-  --accent-hover: #ff6f00;
-  --accent-bg: rgba(230, 81, 0, 0.1);
-  --accent-border: #bf360c;
-  --accent-glow: rgba(230, 81, 0, 0.35);
-  --ocean-accent: #00897b;
-  --ocean-glow: rgba(0, 137, 123, 0.3);
-  --progress-fill: linear-gradient(90deg, #2e7d32 0%, #43a047 50%, #66bb6a 100%);
-  --progress-glow: rgba(67, 160, 71, 0.4);
-
-  /* 圆角与过渡 */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --radius-full: 9999px;
   --transition: 0.2s ease;
 
-  --font-sans: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.148 0.004 228.8);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.148 0.004 228.8);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.148 0.004 228.8);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.963 0.002 197.1);
+  --muted-foreground: oklch(0.56 0.021 213.5);
+  --accent: oklch(0.963 0.002 197.1);
+  --accent-foreground: oklch(0.218 0.008 223.9);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.925 0.005 214.3);
+  --input: oklch(0.925 0.005 214.3);
+  --ring: oklch(0.723 0.014 214.4);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.987 0.002 197.1);
+  --sidebar-foreground: oklch(0.148 0.004 228.8);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.963 0.002 197.1);
+  --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
+  --sidebar-border: oklch(0.925 0.005 214.3);
+  --sidebar-ring: oklch(0.723 0.014 214.4);
+
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --card-shadow: 0 1px 3px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+
+  /* Legacy names used across App.css → map to shadcn scale */
+  --text: var(--foreground);
+  --text-h: var(--foreground);
+  --text-muted: var(--muted-foreground);
+  --bg: var(--background);
+  --card-bg: var(--card);
+  --card-border: var(--border);
+  --border-light: var(--border);
+
+  --forest-dark: var(--foreground);
+  --forest: var(--primary);
+  --forest-mid: var(--chart-3);
+  --forest-light: var(--chart-2);
+  --forest-pale: var(--chart-1);
+  --forest-bg: var(--muted);
+  --forest-cream: var(--muted);
+  --forest-paper: var(--accent);
+
+  --ocean-dark: var(--foreground);
+  --ocean: var(--ring);
+  --ocean-mid: var(--chart-3);
+  --ocean-light: var(--chart-2);
+  --ocean-pale: var(--chart-1);
+  --ocean-bg: var(--muted);
+  --ocean-paper: var(--accent);
+
+  --accent-cta: var(--primary);
+  --accent-cta-hover: var(--chart-5);
+  --accent-bg: oklch(0.488 0.243 264.376 / 0.12);
+  --accent-border: var(--chart-5);
+  --accent-glow: oklch(0.488 0.243 264.376 / 0.35);
+  --ocean-glow: oklch(0.723 0.014 214.4 / 0.35);
+
+  --progress-fill: linear-gradient(
+    90deg,
+    var(--chart-3) 0%,
+    var(--chart-2) 50%,
+    var(--chart-1) 100%
+  );
+  --progress-glow: oklch(0.623 0.214 259.815 / 0.45);
 
   font: 16px/1.6 var(--font-sans);
   letter-spacing: 0.01em;
   color-scheme: light;
-  color: var(--text);
+  color: var(--foreground);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -82,16 +114,15 @@
 body {
   margin: 0;
   min-height: 100vh;
-  /* 宝可梦 Pokopia 风格拼接背景：森林×海洋拼贴图 */
-  background:
-    linear-gradient(165deg, rgba(232, 245, 233, 0.88) 0%, rgba(240, 247, 240, 0.9) 40%, rgba(224, 242, 241, 0.88) 100%),
-    url(/bg-pokopia-collage.svg) center / cover no-repeat fixed;
+  background: var(--background);
+  color: var(--foreground);
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--text-h);
+  color: var(--foreground);
   letter-spacing: -0.02em;
 }
 
@@ -109,15 +140,19 @@ h2 {
 }
 
 @media (max-width: 1024px) {
-  h1 { font-size: 1.25rem; }
-  h2 { font-size: 1.2rem; }
+  h1 {
+    font-size: 1.25rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
 }
 
 h3 {
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-h);
+  color: var(--foreground);
 }
 
 p {
@@ -131,12 +166,12 @@ code,
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  color: var(--forest-dark);
-  background: var(--forest-paper);
+  color: var(--foreground);
+  background: var(--muted);
   padding: 0.15em 0.5em;
 }
 
 ::selection {
-  background: var(--forest-pale);
-  color: var(--text-h);
+  background: oklch(0.809 0.105 251.813 / 0.35);
+  color: var(--foreground);
 }

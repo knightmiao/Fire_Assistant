@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { User } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import { parseFireStatePayload } from '../lib/parseFireStatePayload';
@@ -10,8 +11,6 @@ export function CloudSaveBar() {
   const getStateForExport = useFireStore((s) => s.getStateForExport);
   const loadFullState = useFireStore((s) => s.loadFullState);
   const [user, setUser] = useState<User | null>(null);
-  const [email, setEmail] = useState('');
-  const [sendingLink, setSendingLink] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [restoring, setRestoring] = useState(false);
 
@@ -30,31 +29,6 @@ export function CloudSaveBar() {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const handleSendMagicLink = useCallback(async () => {
-    if (!supabase) {
-      showToast('未配置 Supabase（检查 .env.local）', 'error');
-      return;
-    }
-    const trimmed = email.trim();
-    if (!trimmed) {
-      showToast('请输入邮箱地址', 'error');
-      return;
-    }
-    setSendingLink(true);
-    const { error } = await supabase.auth.signInWithOtp({
-      email: trimmed,
-      options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
-      },
-    });
-    setSendingLink(false);
-    if (error) {
-      showToast(`发送失败：${error.message}`, 'error');
-      return;
-    }
-    showToast('登录链接已发送到邮箱，请查收并点击完成登录');
-  }, [email, showToast]);
 
   const handleSignOut = useCallback(async () => {
     if (!supabase) return;
@@ -169,38 +143,15 @@ export function CloudSaveBar() {
           </>
         ) : (
           <>
-            <input
-              type="email"
-              className="cloud-save-email"
-              placeholder="邮箱（用于接收登录链接）"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-            />
-            <button
-              type="button"
-              className="btn"
-              onClick={handleSendMagicLink}
-              disabled={sendingLink}
-            >
-              {sendingLink ? '发送中…' : '发送登录链接'}
-            </button>
-            <button type="button" className="btn" onClick={handleRestore} disabled={restoring}>
-              {restoring ? '恢复中…' : '从云端恢复'}
-            </button>
-            <button
-              type="button"
-              className="btn primary"
-              onClick={handleUpload}
-              disabled={uploading}
-            >
-              {uploading ? '保存中…' : '上传到 Supabase 保存'}
-            </button>
+            <span className="cloud-save-user">未登录，无法读写云端备份</span>
+            <Link to="/login?next=/dashboard" className="btn primary">
+              前往登录（邮箱验证码）
+            </Link>
           </>
         )}
       </div>
       <p className="cloud-save-hint">
-        登录与云端备份仅在本页（FIRE 看板）提供。登录状态保存在本机浏览器；重新打开后若仍显示「已登录」，可直接「从云端恢复」（会覆盖本地数据）。数据表：{' '}
+        在 <Link to="/login">登录页</Link> 使用邮箱验证码登录。登录状态保存在本机浏览器；已登录时可「从云端恢复」（会覆盖本地数据）。数据表：{' '}
         <code>fire_app_snapshot</code>。
       </p>
     </div>
