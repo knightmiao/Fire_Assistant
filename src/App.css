@@ -417,6 +417,53 @@
   opacity: 0.8;
 }
 
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 36rem;
+}
+
+.feedback-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.feedback-form select,
+.feedback-form input[type='text'],
+.feedback-form textarea {
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.feedback-form textarea {
+  resize: vertical;
+  min-height: 8rem;
+  line-height: 1.5;
+}
+
+.feedback-form select:focus,
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px oklch(0.723 0.014 214.4 / 0.22);
+}
+
+.feedback-form-actions {
+  margin-top: 0.25rem;
+}
+
 .checkbox {
   flex-direction: row;
   align-items: center;

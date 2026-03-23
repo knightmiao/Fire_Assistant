@@ -44,6 +44,22 @@ export function IconIncome(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** 反馈 / 对话气泡 — 线框，与侧栏其它图标尺度一致 */
+export function IconFeedback(props: SVGProps<SVGSVGElement>) {
+  const s = 1.75;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden {...props}>
+      <path
+        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        stroke="currentColor"
+        strokeWidth={s}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /** 删除 / 垃圾桶 — 线框黑白风格，与 shadcn 类方形描边按钮搭配 */
 export function IconTrash(props: SVGProps<SVGSVGElement>) {
   const stroke = 1.75;

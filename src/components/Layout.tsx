@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { CloudSaveBar } from './CloudSaveBar';
-import { IconDashboard, IconProfile, IconAssets } from './PixelIcons';
+import { IconDashboard, IconProfile, IconAssets, IconFeedback } from './PixelIcons';
 
 type NavItem = {
   to: string;
@@ -28,6 +28,12 @@ const nav: NavItem[] = [
     label: 'FIRE 计划设置',
     Icon: IconProfile,
     isActive: (p) => p === '/settings',
+  },
+  {
+    to: '/feedback',
+    label: '反馈',
+    Icon: IconFeedback,
+    isActive: (p) => p === '/feedback',
   },
 ];
 
@@ -64,6 +70,7 @@ export function Layout() {
                 <Link
                   key={to}
                   to={to}
+                  state={to === '/feedback' ? { from: location.pathname } : undefined}
                   className={active ? 'sidebar-link sidebar-link--active' : 'sidebar-link'}
                   aria-current={active ? 'page' : undefined}
                   onClick={closeMobile}
