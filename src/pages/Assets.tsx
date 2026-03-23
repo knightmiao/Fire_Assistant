@@ -76,108 +76,140 @@ export function Assets() {
           <h3>资产</h3>
           <button type="button" className="btn primary" onClick={handleAddAsset}>+ 添加资产</button>
         </div>
-        <ul className="list">
-          {assets.map((a: AssetItem) => {
-            const isHk = a.type === 'stock_hk';
-            const isUs = a.type === 'stock_us';
-            const useForeign = isHk || isUs;
-            const currencyLabel = isHk ? '港币' : isUs ? '美元' : '元';
-            const defaultRate = isHk ? config.rateHKDToCNY : config.rateUSDToCNY;
-            const origAmount = a.currency && (a.currency === 'HKD' || a.currency === 'USD') && a.amountOriginal != null
-              ? a.amountOriginal
-              : (a.rateToCNY && a.rateToCNY > 0 ? a.amountCNY / a.rateToCNY : 0);
-            const rate = a.rateToCNY ?? defaultRate;
+        <div className="data-table-wrap data-table-scroll">
+          <table className="data-table data-table--wide">
+            <thead>
+              <tr>
+                <th className="data-table-col-type">类型</th>
+                <th>金额</th>
+                <th>名称（选填）</th>
+                <th className="data-table-col-narrow">计入 FIRE</th>
+                <th className="data-table-col-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {assets.length === 0 ? (
+                <tr>
+                  <td colSpan={5} style={{ color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
+                    暂无资产，点击「添加资产」开始录入。
+                  </td>
+                </tr>
+              ) : (
+                assets.map((a: AssetItem) => {
+                  const isHk = a.type === 'stock_hk';
+                  const isUs = a.type === 'stock_us';
+                  const useForeign = isHk || isUs;
+                  const currencyLabel = isHk ? '港币' : isUs ? '美元' : '元';
+                  const defaultRate = isHk ? config.rateHKDToCNY : config.rateUSDToCNY;
+                  const origAmount = a.currency && (a.currency === 'HKD' || a.currency === 'USD') && a.amountOriginal != null
+                    ? a.amountOriginal
+                    : (a.rateToCNY && a.rateToCNY > 0 ? a.amountCNY / a.rateToCNY : 0);
+                  const rate = a.rateToCNY ?? defaultRate;
+                  const showFillFromName = !useForeign && a.amountCNY === 0 && a.name != null && /^\d+(\.\d+)?$/.test(String(a.name));
 
-            return (
-              <li key={a.id} className="list-item">
-                <select
-                  value={a.type}
-                  onChange={(e) => updateAsset(a.id, { type: e.target.value as AssetType })}
-                  title="资产类型"
-                >
-                  {assetTypes.map((t) => (
-                    <option key={t} value={t}>{ASSET_TYPE_LABELS[t]}</option>
-                  ))}
-                </select>
-                {useForeign ? (
-                  <>
-                    <label className="list-item-inline">
-                      <span className="list-item-inline-tag">金额（{currencyLabel}）</span>
-                      <input
-                        type="number"
-                        placeholder="0"
-                        min={0}
-                        step={isHk || isUs ? 0.01 : 1}
-                        value={origAmount === 0 ? '' : origAmount}
-                        onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', Number(e.target.value) || 0, rate)}
-                      />
-                    </label>
-                    <label className="list-item-inline">
-                      <span className="list-item-inline-tag">汇率→¥</span>
-                      <input
-                        type="number"
-                        placeholder="0"
-                        min={0}
-                        step={0.01}
-                        value={rate === 0 ? '' : rate}
-                        onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', origAmount, Number(e.target.value) || 0)}
-                      />
-                    </label>
-                    <span className="list-item-cny-hint">≈ ¥ {(a.amountCNY / 10000).toFixed(1)} 万</span>
-                  </>
-                ) : (
-                  <label className="list-item-inline">
-                    <span className="list-item-inline-tag">金额（元）</span>
-                    <input
-                      type="number"
-                      placeholder="0"
-                      min={0}
-                      step={1}
-                      value={a.amountCNY === 0 ? '' : a.amountCNY}
-                      onChange={(e) => updateAsset(a.id, { amountCNY: Number(e.target.value) || 0 })}
-                    />
-                  </label>
-                )}
-                <label className="list-item-inline">
-                  <span className="list-item-inline-tag">名称（选填）</span>
-                  <input
-                    type="text"
-                    placeholder="如：某银行卡"
-                    value={a.name ?? ''}
-                    onChange={(e) => updateAsset(a.id, { name: e.target.value || undefined })}
-                  />
-                </label>
-                {!useForeign && a.amountCNY === 0 && a.name != null && /^\d+(\.\d+)?$/.test(String(a.name)) && (
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => updateAsset(a.id, { amountCNY: Number(a.name) || 0, name: '' })}
-                    title="将名称中的数字填入金额"
-                  >
-                    用名称填金额
-                  </button>
-                )}
-                <label className="checkbox">
-                  <input
-                    type="checkbox"
-                    checked={a.countInFire}
-                    onChange={(e) => updateAsset(a.id, { countInFire: e.target.checked })}
-                  />
-                  计入 FIRE
-                </label>
-                <button
-                  type="button"
-                  className="btn danger btn-icon"
-                  onClick={() => removeAsset(a.id)}
-                  aria-label="删除此资产"
-                  title="删除"
-                >
-                  <IconTrash />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+                  return (
+                    <tr key={a.id}>
+                      <td className="data-table-col-type">
+                        <select
+                          value={a.type}
+                          onChange={(e) => updateAsset(a.id, { type: e.target.value as AssetType })}
+                          title="资产类型"
+                          aria-label="资产类型"
+                        >
+                          {assetTypes.map((t) => (
+                            <option key={t} value={t}>{ASSET_TYPE_LABELS[t]}</option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        {useForeign ? (
+                          <div className="data-table-amount-stack">
+                            <div className="data-table-amount-row">
+                              <span className="data-table-micro-label">{currencyLabel}</span>
+                              <input
+                                type="number"
+                                placeholder="0"
+                                min={0}
+                                step={isHk || isUs ? 0.01 : 1}
+                                value={origAmount === 0 ? '' : origAmount}
+                                onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', Number(e.target.value) || 0, rate)}
+                              />
+                            </div>
+                            <div className="data-table-amount-row">
+                              <span className="data-table-micro-label">汇率→¥</span>
+                              <input
+                                type="number"
+                                placeholder="0"
+                                min={0}
+                                step={0.01}
+                                value={rate === 0 ? '' : rate}
+                                onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', origAmount, Number(e.target.value) || 0)}
+                              />
+                            </div>
+                            <span className="data-table-hint">≈ ¥ {(a.amountCNY / 10000).toFixed(1)} 万</span>
+                          </div>
+                        ) : (
+                          <input
+                            type="number"
+                            placeholder="0"
+                            min={0}
+                            step={1}
+                            value={a.amountCNY === 0 ? '' : a.amountCNY}
+                            onChange={(e) => updateAsset(a.id, { amountCNY: Number(e.target.value) || 0 })}
+                            aria-label="金额（元）"
+                          />
+                        )}
+                      </td>
+                      <td>
+                        <input
+                          className="data-table-name-input"
+                          type="text"
+                          placeholder="如：某银行卡"
+                          value={a.name ?? ''}
+                          onChange={(e) => updateAsset(a.id, { name: e.target.value || undefined })}
+                          aria-label="名称"
+                        />
+                      </td>
+                      <td className="data-table-col-check">
+                        <label className="checkbox">
+                          <input
+                            type="checkbox"
+                            checked={a.countInFire}
+                            onChange={(e) => updateAsset(a.id, { countInFire: e.target.checked })}
+                          />
+                          <span className="sr-only">计入 FIRE</span>
+                        </label>
+                      </td>
+                      <td className="data-table-col-actions">
+                        <div className="data-table-actions">
+                          {showFillFromName && (
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() => updateAsset(a.id, { amountCNY: Number(a.name) || 0, name: '' })}
+                              title="将名称中的数字填入金额"
+                            >
+                              用名称填金额
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            className="btn btn-icon btn-icon-delete"
+                            onClick={() => removeAsset(a.id)}
+                            aria-label="删除此资产"
+                            title="删除"
+                          >
+                            <IconTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="card">
@@ -185,41 +217,63 @@ export function Assets() {
           <h3>负债</h3>
           <button type="button" className="btn primary" onClick={handleAddLiability}>+ 添加负债</button>
         </div>
-        <ul className="list">
-          {liabilities.map((l: LiabilityItem) => (
-            <li key={l.id} className="list-item">
-              <label className="list-item-inline">
-                <span className="list-item-inline-tag">金额（元）</span>
-                <input
-                  type="number"
-                  placeholder="0"
-                  min={0}
-                  step={1}
-                  value={l.amountCNY === 0 ? '' : l.amountCNY}
-                  onChange={(e) => updateLiability(l.id, { amountCNY: Number(e.target.value) || 0 })}
-                />
-              </label>
-              <label className="list-item-inline">
-                <span className="list-item-inline-tag">名称</span>
-                <input
-                  type="text"
-                  placeholder="如：房贷"
-                  value={l.name}
-                  onChange={(e) => updateLiability(l.id, { name: e.target.value })}
-                />
-              </label>
-              <button
-                type="button"
-                className="btn danger btn-icon"
-                onClick={() => removeLiability(l.id)}
-                aria-label="删除此负债"
-                title="删除"
-              >
-                <IconTrash />
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="data-table-wrap data-table-scroll">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>金额（元）</th>
+                <th>名称</th>
+                <th className="data-table-col-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {liabilities.length === 0 ? (
+                <tr>
+                  <td colSpan={3} style={{ color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
+                    暂无负债，点击「添加负债」开始录入。
+                  </td>
+                </tr>
+              ) : (
+                liabilities.map((l: LiabilityItem) => (
+                  <tr key={l.id}>
+                    <td className="data-table-col-num">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        min={0}
+                        step={1}
+                        value={l.amountCNY === 0 ? '' : l.amountCNY}
+                        onChange={(e) => updateLiability(l.id, { amountCNY: Number(e.target.value) || 0 })}
+                        aria-label="金额（元）"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        className="data-table-name-input"
+                        type="text"
+                        placeholder="如：房贷"
+                        value={l.name}
+                        onChange={(e) => updateLiability(l.id, { name: e.target.value })}
+                        aria-label="名称"
+                      />
+                    </td>
+                    <td className="data-table-col-actions">
+                      <button
+                        type="button"
+                        className="btn btn-icon btn-icon-delete"
+                        onClick={() => removeLiability(l.id)}
+                        aria-label="删除此负债"
+                        title="删除"
+                      >
+                        <IconTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

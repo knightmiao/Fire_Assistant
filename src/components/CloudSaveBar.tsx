@@ -138,7 +138,7 @@ export function CloudSaveBar() {
               onClick={handleUpload}
               disabled={uploading}
             >
-              {uploading ? '保存中…' : '上传到 Supabase 保存'}
+              {uploading ? '上传中…' : '上传保存'}
             </button>
           </>
         ) : (
@@ -151,8 +151,7 @@ export function CloudSaveBar() {
         )}
       </div>
       <p className="cloud-save-hint">
-        在 <Link to="/login">登录页</Link> 使用邮箱验证码登录。登录状态保存在本机浏览器；已登录时可「从云端恢复」（会覆盖本地数据）。数据表：{' '}
-        <code>fire_app_snapshot</code>。
+        在 <Link to="/login">登录页</Link> 使用邮箱验证码登录。登录状态保存在本机浏览器；已登录时可「从云端恢复」（会覆盖本地数据）。
       </p>
     </div>
   );

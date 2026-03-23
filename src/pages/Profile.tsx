@@ -70,7 +70,7 @@ export function Profile() {
             />
           </label>
           <p className="hint">
-            留空或填 0 时，FIRE 目标按「退休后期望年支出 ÷ SWR」自动计算；填入金额后，会优先使用这个手动目标。
+            留空或填 0 时，FIRE 目标按「退休后期望年支出 ÷ SWR」自动计算
           </p>
           <label>
             预期年化回报率（如 0.06 = 6%）
@@ -116,8 +116,11 @@ export function Profile() {
       </section>
 
       <section className="card">
-        <h3>深圳五险一金（可调）</h3>
-        <p className="hint">仅供参考，以实际工资条为准。公积金提取比例：每月提取并入现金的部分，仅在填写「税前月薪」时参与预测。</p>
+        <h3>当前城市五险一金（可调）</h3>
+        <p className="hint">
+          仅供参考，以实际工资条为准。预测里「公积金提取」按每月入账（个人+单位缴存）×
+          提取比例并入现金；单位比例未填时与个人相同。仅「税前月薪」时参与预测。
+        </p>
         <div className="form-grid">
           <label>
             养老个人比例（如 0.08 = 8%）
@@ -153,7 +156,7 @@ export function Profile() {
             />
           </label>
           <label>
-            公积金比例（如 0.12 = 12%，可调 5%~12%）
+            公积金个人缴存比例（如 0.12 = 12%，可调 5%~12%）
             <input
               type="number"
               step={0.01}
@@ -161,6 +164,25 @@ export function Profile() {
               max={0.12}
               value={shenzhenTax.housingFund ?? ''}
               onChange={(e) => setShenzhenTax({ housingFund: Number(e.target.value) ?? DEFAULT_SHENZHEN_TAX.housingFund })}
+            />
+          </label>
+          <label>
+            公积金单位缴存比例（留空=与个人相同，如均为 12% 则合计 24% 计入提取基数）
+            <input
+              type="number"
+              step={0.01}
+              min={0}
+              max={0.12}
+              value={shenzhenTax.housingFundEmployer ?? ''}
+              placeholder="同个人"
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v === '') {
+                  setShenzhenTax({ housingFundEmployer: undefined });
+                } else {
+                  setShenzhenTax({ housingFundEmployer: Number(v) });
+                }
+              }}
             />
           </label>
           <label>

@@ -87,7 +87,17 @@ export function projectToFireMonthly(state: FireState): {
   const inf = config.inflationRate;
   const monthlyReturn = Math.pow(1 + r, 1 / MONTHS_PER_YEAR);
 
-  const monthlyData: { yearIndex: number; calendarMonth: number; salary: number; bonus: number; rsu: number; expense: number; netWorth: number; investmentReturn: number }[] = [];
+  const monthlyData: {
+    yearIndex: number;
+    calendarMonth: number;
+    salary: number;
+    bonus: number;
+    rsu: number;
+    housingFundExtract: number;
+    expense: number;
+    netWorth: number;
+    investmentReturn: number;
+  }[] = [];
   let A = currentNet;
   let m = 0;
   const maxMonths = 80 * MONTHS_PER_YEAR;
@@ -130,13 +140,16 @@ export function projectToFireMonthly(state: FireState): {
       ? yearlyRSUVestIncomeSimple(rsuGrants, baseYear, yearIndex)
       : 0;
 
-    /** 公积金每月提取并入现金的部分（仅当填写税前月薪时参与计算） */
+    /** 公积金每月提取并入现金：基数为个人+单位缴存（单位比例默认与个人相同，常见为各 12% 合计 24%） */
     const housingFundWithdrawRate = shenzhenTax.housingFundWithdrawRate ?? 0;
     const monthlyGrossThisMonth =
       salary.monthlyGross * Math.pow(1 + salary.raiseRatePerYear, salaryYearOffset);
+    const personalHf = shenzhenTax.housingFund;
+    const employerHf = shenzhenTax.housingFundEmployer ?? personalHf;
+    const housingFundMonthlyAccrual = (personalHf + employerHf) * monthlyGrossThisMonth;
     const housingFundExtract =
       !salary.isAfterTax && housingFundWithdrawRate > 0
-        ? housingFundWithdrawRate * shenzhenTax.housingFund * monthlyGrossThisMonth
+        ? housingFundWithdrawRate * housingFundMonthlyAccrual
         : 0;
 
     const expenseThisMonth = (expense.currentAnnual / MONTHS_PER_YEAR) * Math.pow(1 + inf, yearIndex);
@@ -153,6 +166,7 @@ export function projectToFireMonthly(state: FireState): {
       salary: salaryThisMonth,
       bonus: bonusThisMonth,
       rsu: rsuThisMonth,
+      housingFundExtract,
       expense: expenseThisMonth,
       netWorth: Math.round(A),
       investmentReturn: Math.round(investmentReturnThisMonth),
@@ -174,7 +188,10 @@ export function projectToFireMonthly(state: FireState): {
   for (let y = 0; y <= maxY; y++) {
     const monthsInYear = monthlyData.filter((d) => d.yearIndex === y);
     if (monthsInYear.length === 0) continue;
-    const income = monthsInYear.reduce((s, d) => s + d.salary + d.bonus + d.rsu, 0);
+    const income = monthsInYear.reduce(
+      (s, d) => s + d.salary + d.bonus + d.rsu + d.housingFundExtract,
+      0
+    );
     const expenseSum = monthsInYear.reduce((s, d) => s + d.expense, 0);
     const investmentReturnSum = monthsInYear.reduce((s, d) => s + d.investmentReturn, 0);
     const last = monthsInYear[monthsInYear.length - 1];
@@ -188,14 +205,17 @@ export function projectToFireMonthly(state: FireState): {
     });
     yearlyMonths.push({
       year: baseYear + y,
-      months: monthsInYear.map((d) => ({
-        month: d.calendarMonth,
-        netWorth: d.netWorth,
-        income: Math.round(d.salary + d.bonus + d.rsu),
-        expense: Math.round(d.expense),
-        savings: Math.round(d.salary + d.bonus + d.rsu - d.expense),
-        investmentReturn: d.investmentReturn,
-      })),
+      months: monthsInYear.map((d) => {
+        const inc = d.salary + d.bonus + d.rsu + d.housingFundExtract;
+        return {
+          month: d.calendarMonth,
+          netWorth: d.netWorth,
+          income: Math.round(inc),
+          expense: Math.round(d.expense),
+          savings: Math.round(inc - d.expense),
+          investmentReturn: d.investmentReturn,
+        };
+      }),
     });
   }
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { CloudSaveBar } from './CloudSaveBar';
 import { IconDashboard, IconProfile, IconAssets } from './PixelIcons';
 
 type NavItem = {
@@ -73,6 +74,9 @@ export function Layout() {
               );
             })}
           </nav>
+          <div className="sidebar-account">
+            <CloudSaveBar />
+          </div>
         </div>
       </aside>
 

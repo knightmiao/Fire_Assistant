@@ -1,5 +1,4 @@
 import { useState, Fragment } from 'react';
-import { CloudSaveBar } from '../components/CloudSaveBar';
 import { useFireStore } from '../store/fireStore';
 import { fireTarget, netWorthCountInFire, projectToFireMonthly } from '../lib/fireCalc';
 
@@ -20,7 +19,6 @@ export function Dashboard() {
 
   return (
     <div className="page">
-      <CloudSaveBar />
       <h2>FIRE 看板</h2>
 
       <section className="card">

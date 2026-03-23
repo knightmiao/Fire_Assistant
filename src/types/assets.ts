@@ -37,7 +37,7 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   stock_hk: '港股',
   stock_us: '美股',
   fund: '基金',
-  receivable: '应收（别人欠我钱）',
+  receivable: '应收债务',
   rsu_vested: 'RSU 已归属',
   rsu_unvested: 'RSU 未归属',
   bond_etc: '债券/理财',

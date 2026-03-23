@@ -97,10 +97,19 @@ export const useFireStore = create<FireStore>()(
         })),
 
       setShenzhenTax: (t) =>
-        set((s) => ({
-          shenzhenTax: { ...s.shenzhenTax, ...t },
-          lastUpdated: new Date().toISOString(),
-        })),
+        set((s) => {
+          const merged: ShenzhenTaxConfig = { ...s.shenzhenTax, ...t };
+          if (
+            Object.prototype.hasOwnProperty.call(t, 'housingFundEmployer') &&
+            t.housingFundEmployer === undefined
+          ) {
+            delete (merged as unknown as Record<string, unknown>).housingFundEmployer;
+          }
+          return {
+            shenzhenTax: merged,
+            lastUpdated: new Date().toISOString(),
+          };
+        }),
 
       setAssets: (assets) =>
         set({ assets, lastUpdated: new Date().toISOString() }),
