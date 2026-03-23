@@ -19,7 +19,7 @@ const nav: NavItem[] = [
   },
   {
     to: '/finance/assets',
-    label: '财务数据',
+    label: '财务数据设置',
     Icon: IconAssets,
     isActive: (p) => p.startsWith('/finance'),
   },
@@ -31,7 +31,7 @@ const nav: NavItem[] = [
   },
   {
     to: '/feedback',
-    label: '反馈',
+    label: '反馈与建议',
     Icon: IconFeedback,
     isActive: (p) => p === '/feedback',
   },

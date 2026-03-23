@@ -22,7 +22,7 @@ export function Dashboard() {
       <h2>FIRE 看板</h2>
 
       <section className="card">
-        <h3>关键数字与进度</h3>
+        <h3>概览</h3>
         {target > 0 ? (
           <div className="fire-goal-scale" aria-label="从零到 FIRE 目标的进度">
             <div className="fire-goal-scale-track-area">
@@ -96,7 +96,7 @@ export function Dashboard() {
 
       {projection.yearly.length > 0 && (
         <section className="card">
-          <h3>未来几年净资产预测</h3>
+          <h3>财务状态预测</h3>
           <table className="table">
             <thead>
               <tr>

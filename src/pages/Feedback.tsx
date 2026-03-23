@@ -122,7 +122,7 @@ export function Feedback() {
     <div className="page">
       <h2>反馈与建议</h2>
       <p className="hint page-lead">
-        描述越具体越好（例如：在哪个页面、期望怎样）。从侧栏进入本页时，我们会自动记录你刚才浏览的页面，无需手动填写。
+        描述越具体越好（例如：在哪个页面、期望怎样）。
       </p>
 
       <section className="card">
