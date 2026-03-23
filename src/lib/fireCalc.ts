@@ -89,6 +89,7 @@ export function projectToFireMonthly(state: FireState): {
 
   const monthlyData: {
     yearIndex: number;
+    calendarYear: number;
     calendarMonth: number;
     salary: number;
     bonus: number;
@@ -162,6 +163,7 @@ export function projectToFireMonthly(state: FireState): {
 
     monthlyData.push({
       yearIndex,
+      calendarYear,
       calendarMonth,
       salary: salaryThisMonth,
       bonus: bonusThisMonth,
@@ -184,19 +186,23 @@ export function projectToFireMonthly(state: FireState): {
 
   const yearlyAggregate: { year: number; netWorth: number; income: number; expense: number; savings: number; investmentReturn: number }[] = [];
   const yearlyMonths: { year: number; months: { month: number; netWorth: number; income: number; expense: number; savings: number; investmentReturn: number }[] }[] = [];
-  const maxY = Math.max(...monthlyData.map((d) => d.yearIndex), 0);
-  for (let y = 0; y <= maxY; y++) {
-    const monthsInYear = monthlyData.filter((d) => d.yearIndex === y);
-    if (monthsInYear.length === 0) continue;
-    const income = monthsInYear.reduce(
+
+  /** 按公历年汇总，避免「从当前月起的 12 个月」与日历年份错位（不再出现 3–12 月后又接已过去的 1–2 月误标同年） */
+  const calendarYears = Array.from(new Set(monthlyData.map((d) => d.calendarYear))).sort((a, b) => a - b);
+  for (const cy of calendarYears) {
+    const monthsInCalYear = monthlyData
+      .filter((d) => d.calendarYear === cy)
+      .sort((a, b) => a.calendarMonth - b.calendarMonth);
+    if (monthsInCalYear.length === 0) continue;
+    const income = monthsInCalYear.reduce(
       (s, d) => s + d.salary + d.bonus + d.rsu + d.housingFundExtract,
       0
     );
-    const expenseSum = monthsInYear.reduce((s, d) => s + d.expense, 0);
-    const investmentReturnSum = monthsInYear.reduce((s, d) => s + d.investmentReturn, 0);
-    const last = monthsInYear[monthsInYear.length - 1];
+    const expenseSum = monthsInCalYear.reduce((s, d) => s + d.expense, 0);
+    const investmentReturnSum = monthsInCalYear.reduce((s, d) => s + d.investmentReturn, 0);
+    const last = monthsInCalYear[monthsInCalYear.length - 1];
     yearlyAggregate.push({
-      year: baseYear + y,
+      year: cy,
       netWorth: last.netWorth,
       income: Math.round(income),
       expense: Math.round(expenseSum),
@@ -204,8 +210,8 @@ export function projectToFireMonthly(state: FireState): {
       investmentReturn: Math.round(investmentReturnSum),
     });
     yearlyMonths.push({
-      year: baseYear + y,
-      months: monthsInYear.map((d) => {
+      year: cy,
+      months: monthsInCalYear.map((d) => {
         const inc = d.salary + d.bonus + d.rsu + d.housingFundExtract;
         return {
           month: d.calendarMonth,
