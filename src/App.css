@@ -986,6 +986,49 @@ input[type='number']::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.dashboard-notice-card {
+  border-color: var(--ring);
+  background: linear-gradient(180deg, oklch(0.985 0.006 220) 0%, var(--card) 100%);
+}
+
+.dashboard-notice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.dashboard-notice-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--background);
+  padding: 0.8rem 0.9rem;
+}
+
+.dashboard-notice-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.dashboard-notice-list {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+.dashboard-notice-list li + li {
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-notice-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ========== 表格 ========== */
 .table {
   width: 100%;

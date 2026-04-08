@@ -16,10 +16,34 @@ export function Dashboard() {
   const progress = target > 0 ? Math.min(100, (netWorth / target) * 100) : 0;
   const projection = projectToFireMonthly(state);
   const badgeAlign = alignBubbleOnProgress(progress);
+  const showGettingStartedNotice = target <= 0 || projection.yearly.length === 0;
 
   return (
     <div className="page">
       <h2>FIRE 看板</h2>
+
+      {showGettingStartedNotice && (
+        <section className="card dashboard-notice-card" aria-label="使用与登录提醒">
+          <h3>开始前提醒</h3>
+          <div className="dashboard-notice-grid">
+            <div className="dashboard-notice-block">
+              <p className="dashboard-notice-title">如何开始使用</p>
+              <ol className="dashboard-notice-list">
+                <li>先到「财务数据设置」录入资产、负债与收入</li>
+                <li>再到「FIRE 计划设置」填写目标年支出、SWR 等参数</li>
+                <li>完成后回到首页，即可看到进度条、时间线与预测表</li>
+              </ol>
+            </div>
+            <div className="dashboard-notice-block">
+              <p className="dashboard-notice-title">登录与云端保存</p>
+              <ul className="dashboard-notice-list">
+                <li>未登录也可以本地计算与使用全部核心功能</li>
+                <li>登录后可将数据上传云端，并在新设备恢复（会覆盖本地）</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="card">
         <h3>概览</h3>
