@@ -267,6 +267,96 @@
   letter-spacing: -0.02em;
 }
 
+/* ========== UA：手机/平板 → 侧栏固定图标窄轨；PC UA 仍用原 max-width 抽屉 ========== */
+.app-shell--ua-mobile .sidebar-backdrop {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.app-shell--ua-mobile .sidebar.sidebar--ua-mobile {
+  width: 3.5rem;
+  position: sticky;
+  transform: none !important;
+}
+
+.app-shell--ua-mobile .sidebar-inner {
+  padding: 0.5rem 0.35rem;
+  align-items: center;
+}
+
+.app-shell--ua-mobile .sidebar-brand {
+  justify-content: center;
+  padding: 0.4rem 0.25rem;
+}
+
+.app-shell--ua-mobile .sidebar-nav {
+  align-items: center;
+  width: 100%;
+}
+
+.app-shell--ua-mobile .sidebar-link {
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0.25rem;
+}
+
+.app-shell--ua-mobile .sidebar-account {
+  width: 100%;
+  padding-top: 0.5rem;
+}
+
+.app-shell--ua-mobile .sidebar-account .cloud-save-bar {
+  margin-bottom: 0;
+  padding: 0.35rem 0.2rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.app-shell--ua-mobile .shell-inset {
+  margin-left: 3.5rem !important;
+}
+
+.app-shell--ua-mobile .shell-header {
+  display: flex !important;
+}
+
+.app-shell--ua-mobile .shell-menu-btn {
+  display: none !important;
+}
+
+.cloud-save-bar--rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: stretch;
+}
+
+.btn--rail {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.2rem;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
+a.btn--rail {
+  display: flex;
+  text-decoration: none;
+}
+
+.cloud-save-rail-line {
+  display: block;
+  font-size: 0.65rem;
+  line-height: 1.35;
+  color: var(--muted-foreground);
+  text-align: center;
+  word-break: break-word;
+}
+
 /* ========== 主内容区 ========== */
 .main {
   flex: 1;
@@ -375,6 +465,18 @@
   line-height: 1.5;
 }
 
+/* 数字输入：隐藏浏览器原生上下箭头（移动端更易点中间区域；仍保留 type=number 与数字键盘） */
+input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* ========== 表单 ========== */
 .form-grid {
   display: grid;
@@ -393,8 +495,7 @@
 
 .form-grid input[type="number"],
 .form-grid input[type="text"],
-.form-grid input[type="date"],
-.form-grid select {
+.form-grid input[type="date"] {
   padding: 0.55rem 0.75rem;
   border: 1.5px solid var(--border-light);
   border-radius: var(--radius-md);
@@ -403,6 +504,25 @@
   background: var(--card);
   color: var(--text-h);
   transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-grid select {
+  padding: 0.55rem 2rem 0.55rem 0.75rem;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  color: var(--text-h);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  background-color: var(--card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0.875rem 0.875rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .form-grid input:focus,
@@ -433,7 +553,6 @@
   color: var(--foreground);
 }
 
-.feedback-form select,
 .feedback-form input[type='text'],
 .feedback-form textarea {
   padding: 0.55rem 0.75rem;
@@ -444,6 +563,25 @@
   background: var(--background);
   color: var(--foreground);
   transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.feedback-form select {
+  padding: 0.55rem 2rem 0.55rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  background-color: var(--background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0.875rem 0.875rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .feedback-form textarea {
@@ -481,6 +619,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin: 0;
 }
 
 .key-figures-row {
@@ -493,9 +632,23 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+.key-figures-row--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 @media (max-width: 640px) {
   .key-figures-row--2 {
     grid-template-columns: 1fr;
+  }
+
+  .key-figures-row--3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .key-figures-row--3 {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -527,6 +680,11 @@
   margin: 0;
   line-height: 1.3;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.key-figures-stat--liability dd {
+  color: var(--destructive);
 }
 
 .key-figures-sub {
@@ -965,9 +1123,14 @@
   border-bottom: none;
 }
 
+/* 录入型数字列：与表头左对齐；避免 max-width 20rem + 右对齐导致输入框漂到列右侧 */
 .data-table-col-num {
-  text-align: right;
+  text-align: left;
   font-variant-numeric: tabular-nums;
+}
+
+.data-table .data-table-col-num input[type='number'] {
+  max-width: 100%;
 }
 
 .data-table-col-narrow {
@@ -1018,8 +1181,7 @@
 
 .data-table input[type='number'],
 .data-table input[type='text'],
-.data-table input[type='date'],
-.data-table select {
+.data-table input[type='date'] {
   width: 100%;
   max-width: 20rem;
   box-sizing: border-box;
@@ -1034,16 +1196,35 @@
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
+/* 去掉系统下拉箭头，改用 SVG，左右留白一致（原生 select 在 WebKit 上易「左宽右挤」） */
+.data-table select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 2.25rem;
+  padding: 0.375rem 1.75rem 0.375rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--input);
+  background-color: var(--background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  background-size: 0.875rem 0.875rem;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 .data-table input:focus,
 .data-table select:focus {
   outline: none;
   border-color: var(--ring);
   box-shadow: 0 0 0 2px oklch(0.723 0.014 214.4 / 0.25);
-}
-
-.data-table select {
-  cursor: pointer;
-  max-width: 100%;
 }
 
 .data-table-col-type select {
@@ -1068,6 +1249,53 @@
   flex-direction: column;
   gap: 0.35rem;
   min-width: 10rem;
+}
+
+.data-table-amount-stack--foreign {
+  min-width: 14rem;
+  gap: 0;
+}
+
+.data-table-amount-field-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.data-table-hint--foreign-approx {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* 港股/美股：第一行两列（金额 | 汇率）；外币列标签与换算结果同一行紧跟 */
+.data-table-amount-foreign-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.5rem 0.65rem;
+  align-items: end;
+}
+
+.data-table-amount-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.2rem;
+  min-width: 0;
+  margin: 0;
+  font-weight: inherit;
+}
+
+.data-table-amount-field .data-table-micro-label {
+  width: auto;
+}
+
+.data-table-amount-field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .data-table-amount-row {
@@ -1227,8 +1455,7 @@
 
 .list-item input[type="number"],
 .list-item input[type="text"],
-.list-item input[type="date"],
-.list-item select {
+.list-item input[type="date"] {
   width: 100%;
   max-width: 140px;
   padding: 0.45rem 0.6rem;
@@ -1236,6 +1463,24 @@
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   background: var(--card);
+}
+
+.list-item select {
+  width: 100%;
+  max-width: 140px;
+  padding: 0.45rem 1.35rem 0.45rem 0.6rem;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  background-color: var(--card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.45rem center;
+  background-size: 0.8rem 0.8rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .list-item.rsu-row {

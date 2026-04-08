@@ -59,11 +59,24 @@ export function Assets() {
   return (
     <div className="page">
       <h2>资产与负债</h2>
-      <p className="hint">全部手动录入。港股可直接填港币、美股可直接填美元，系统按汇率折算为人民币；其他资产填人民币金额。</p>
-
       <section className="card">
         <h3>汇总</h3>
-        <p>资产合计：¥ {(totalAssets / 10000).toFixed(1)} 万 · 负债合计：¥ {(totalLiabilities / 10000).toFixed(1)} 万 · 净资产（计入 FIRE）：¥ {(netWorth / 10000).toFixed(1)} 万</p>
+        <dl className="key-figures">
+          <div className="key-figures-row key-figures-row--3">
+            <div>
+              <dt>资产合计</dt>
+              <dd>¥ {(totalAssets / 10000).toFixed(1)} 万</dd>
+            </div>
+            <div className={totalLiabilities > 0 ? 'key-figures-stat--liability' : undefined}>
+              <dt>负债合计</dt>
+              <dd>¥ {(totalLiabilities / 10000).toFixed(1)} 万</dd>
+            </div>
+            <div>
+              <dt>净资产（计入 FIRE）</dt>
+              <dd>¥ {(netWorth / 10000).toFixed(1)} 万</dd>
+            </div>
+          </div>
+        </dl>
         {assets.length > 0 && totalAssets === 0 && assets.some((a) => a.name && /^\d+(\.\d+)?$/.test(String(a.name))) && (
           <p className="data-file-hint">
             检测到部分资产可能把金额填在了「名称」里（名称为数字但金额为 0），请在各行把正确数字填到「金额（元）」中，或点击该行「用名称填金额」修正。
@@ -123,30 +136,44 @@ export function Assets() {
                       </td>
                       <td>
                         {useForeign ? (
-                          <div className="data-table-amount-stack">
-                            <div className="data-table-amount-row">
-                              <span className="data-table-micro-label">{currencyLabel}</span>
-                              <input
-                                type="number"
-                                placeholder="0"
-                                min={0}
-                                step={isHk || isUs ? 0.01 : 1}
-                                value={origAmount === 0 ? '' : origAmount}
-                                onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', Number(e.target.value) || 0, rate)}
-                              />
+                          <div className="data-table-amount-stack data-table-amount-stack--foreign">
+                            <div className="data-table-amount-foreign-grid" role="group" aria-label={`${currencyLabel}与汇率`}>
+                              <label className="data-table-amount-field">
+                                <span className="data-table-amount-field-head">
+                                  <span className="data-table-micro-label">{currencyLabel}</span>
+                                  <span
+                                    className="data-table-hint data-table-hint--foreign-approx"
+                                    id={`asset-foreign-approx-${a.id}`}
+                                    role="status"
+                                    aria-live="polite"
+                                  >
+                                    ≈ ¥ {(a.amountCNY / 10000).toFixed(1)} 万
+                                  </span>
+                                </span>
+                                <input
+                                  type="number"
+                                  placeholder="0"
+                                  min={0}
+                                  step={isHk || isUs ? 0.01 : 1}
+                                  value={origAmount === 0 ? '' : origAmount}
+                                  onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', Number(e.target.value) || 0, rate)}
+                                  aria-label={`${currencyLabel}金额`}
+                                  aria-describedby={`asset-foreign-approx-${a.id}`}
+                                />
+                              </label>
+                              <label className="data-table-amount-field">
+                                <span className="data-table-micro-label">汇率→¥</span>
+                                <input
+                                  type="number"
+                                  placeholder="0"
+                                  min={0}
+                                  step={0.01}
+                                  value={rate === 0 ? '' : rate}
+                                  onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', origAmount, Number(e.target.value) || 0)}
+                                  aria-label="兑人民币汇率"
+                                />
+                              </label>
                             </div>
-                            <div className="data-table-amount-row">
-                              <span className="data-table-micro-label">汇率→¥</span>
-                              <input
-                                type="number"
-                                placeholder="0"
-                                min={0}
-                                step={0.01}
-                                value={rate === 0 ? '' : rate}
-                                onChange={(e) => handleForeignAmountChange(a.id, a.type as 'stock_hk' | 'stock_us', origAmount, Number(e.target.value) || 0)}
-                              />
-                            </div>
-                            <span className="data-table-hint">≈ ¥ {(a.amountCNY / 10000).toFixed(1)} 万</span>
                           </div>
                         ) : (
                           <input

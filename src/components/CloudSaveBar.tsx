@@ -6,7 +6,12 @@ import { parseFireStatePayload } from '../lib/parseFireStatePayload';
 import { useFireStore } from '../store/fireStore';
 import { useToast } from './ToastProvider';
 
-export function CloudSaveBar() {
+type CloudSaveBarProps = {
+  /** 移动端 UA 侧栏窄轨：纵向短按钮，隐藏长文案 */
+  compact?: boolean;
+};
+
+export function CloudSaveBar({ compact = false }: CloudSaveBarProps) {
   const showToast = useToast();
   const getStateForExport = useFireStore((s) => s.getStateForExport);
   const loadFullState = useFireStore((s) => s.loadFullState);
@@ -103,12 +108,64 @@ export function CloudSaveBar() {
   }, [loadFullState, showToast]);
 
   if (!isSupabaseConfigured()) {
+    if (compact) {
+      return (
+        <div className="cloud-save-bar cloud-save-bar--rail">
+          <span
+            className="cloud-save-rail-line"
+            title="请在 .env.local 中配置 VITE_SUPABASE_URL 与 VITE_SUPABASE_ANON_KEY"
+          >
+            未配置云
+          </span>
+        </div>
+      );
+    }
     return (
       <div className="cloud-save-bar">
         <p className="cloud-save-hint">
           请在 <code>.env.local</code> 中配置 <code>VITE_SUPABASE_URL</code> 与{' '}
           <code>VITE_SUPABASE_ANON_KEY</code> 后重启开发服务，即可使用云端保存。
         </p>
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div className="cloud-save-bar cloud-save-bar--rail">
+        {user ? (
+          <>
+            <button
+              type="button"
+              className="btn primary btn--rail"
+              onClick={handleUpload}
+              disabled={uploading}
+              title="上传保存到云端"
+            >
+              {uploading ? '…' : '保存'}
+            </button>
+            <button
+              type="button"
+              className="btn btn--rail"
+              onClick={handleRestore}
+              disabled={restoring}
+              title="从云端恢复（覆盖本地）"
+            >
+              {restoring ? '…' : '恢复'}
+            </button>
+            <button type="button" className="btn btn--rail" onClick={handleSignOut} title="退出登录">
+              退出
+            </button>
+          </>
+        ) : (
+          <Link
+            to="/login?next=/dashboard"
+            className="btn primary btn--rail"
+            title="使用邮箱验证码登录"
+          >
+            登录
+          </Link>
+        )}
       </div>
     );
   }
