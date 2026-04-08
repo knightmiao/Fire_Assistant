@@ -16,13 +16,9 @@ export function Profile() {
   return (
     <div className="page">
       <h2>FIRE 计划设置</h2>
-      <p className="hint page-lead">
-        个人档案、安全提取率、通胀、汇率与税务等假设；影响看板目标与预测。
-      </p>
-
       <section className="card">
         <h3>个人档案</h3>
-        <div className="form-grid">
+        <div className="form-grid form-grid--max-2">
           <label>
             当前年龄
             <input
@@ -48,7 +44,7 @@ export function Profile() {
 
       <section className="card">
         <h3>全局参数</h3>
-        <div className="form-grid">
+        <div className="form-grid form-grid--max-2">
           <label>
             安全提取率 SWR（如 0.04 = 4%）
             <input
@@ -69,9 +65,6 @@ export function Profile() {
               onChange={(e) => setConfig({ manualFireTarget: Number(e.target.value) || 0 })}
             />
           </label>
-          <p className="hint">
-            留空或填 0 时，FIRE 目标按「退休后期望年支出 ÷ SWR」自动计算
-          </p>
           <label>
             预期年化回报率（如 0.06 = 6%）
             <input
@@ -121,7 +114,7 @@ export function Profile() {
           仅供参考，以实际工资条为准。预测里「公积金提取」按每月入账（个人+单位缴存）×
           提取比例并入现金；单位比例未填时与个人相同。仅「税前月薪」时参与预测。
         </p>
-        <div className="form-grid">
+        <div className="form-grid form-grid--max-2">
           <label>
             养老个人比例（如 0.08 = 8%）
             <input
@@ -156,7 +149,7 @@ export function Profile() {
             />
           </label>
           <label>
-            公积金个人缴存比例（如 0.12 = 12%，可调 5%~12%）
+            公积金个人缴存比例（如 0.12 = 12%）
             <input
               type="number"
               step={0.01}
@@ -167,7 +160,7 @@ export function Profile() {
             />
           </label>
           <label>
-            公积金单位缴存比例（留空=与个人相同，如均为 12% 则合计 24% 计入提取基数）
+            公积金单位缴存比例
             <input
               type="number"
               step={0.01}
@@ -210,7 +203,7 @@ export function Profile() {
 
       <section className="card">
         <h3>支出</h3>
-        <div className="form-grid">
+        <div className="form-grid form-grid--max-2">
           <label>
             当前年支出（元）
             <input
