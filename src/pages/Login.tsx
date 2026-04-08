@@ -62,7 +62,7 @@ export function Login() {
     setPhase('code');
     setOtp('');
     setCooldown(RESEND_COOLDOWN_SEC);
-    showToast('验证码已发送，请查收邮件（若模板未改为数字码，请见页面底部说明）');
+    showToast('验证码已发送，请查收邮件');
   }, [email, safeNext, showToast]);
 
   const verify = useCallback(async () => {
@@ -113,7 +113,7 @@ export function Login() {
     <div className="login-page">
       <div className="login-card card">
         <h2 className="login-title">邮箱验证码登录</h2>
-        <p className="hint login-lead">新用户将自动注册；验证码会发到您的邮箱。</p>
+        <p className="hint login-lead">新用户将自动注册；验证码会发到您的邮箱，请注意查收。</p>
 
         {phase === 'email' ? (
           <div className="login-fields">
@@ -175,11 +175,6 @@ export function Login() {
             </div>
           </div>
         )}
-
-        <p className="login-foot-hint">
-          请在 Supabase 控制台将邮件模板改为包含数字验证码 <code>{'{{ .Token }}'}</code>，用户才会收到「输入验证码」邮件；否则可能仍是点击链接登录。
-        </p>
-
         <div className="login-footer-links">
           <Link to="/dashboard">返回应用</Link>
         </div>
