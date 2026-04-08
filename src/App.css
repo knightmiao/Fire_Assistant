@@ -205,11 +205,12 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  height: 3rem;
+  min-height: 3rem;
   flex-shrink: 0;
-  padding: 0 1rem;
+  padding: max(0.35rem, env(safe-area-inset-top, 0px)) 1rem 0.35rem;
   border-bottom: 1px solid var(--border);
   background: var(--background);
+  box-sizing: border-box;
 }
 
 @media (min-width: 769px) {
@@ -267,100 +268,11 @@
   letter-spacing: -0.02em;
 }
 
-/* ========== UA：手机/平板 → 侧栏固定图标窄轨；PC UA 仍用原 max-width 抽屉 ========== */
-.app-shell--ua-mobile .sidebar-backdrop {
-  display: none !important;
-  pointer-events: none !important;
-}
-
-.app-shell--ua-mobile .sidebar.sidebar--ua-mobile {
-  width: 3.5rem;
-  position: sticky;
-  transform: none !important;
-}
-
-.app-shell--ua-mobile .sidebar-inner {
-  padding: 0.5rem 0.35rem;
-  align-items: center;
-}
-
-.app-shell--ua-mobile .sidebar-brand {
-  justify-content: center;
-  padding: 0.4rem 0.25rem;
-}
-
-.app-shell--ua-mobile .sidebar-nav {
-  align-items: center;
-  width: 100%;
-}
-
-.app-shell--ua-mobile .sidebar-link {
-  justify-content: center;
-  width: 100%;
-  padding: 0.5rem 0.25rem;
-}
-
-.app-shell--ua-mobile .sidebar-account {
-  width: 100%;
-  padding-top: 0.5rem;
-}
-
-.app-shell--ua-mobile .sidebar-account .cloud-save-bar {
-  margin-bottom: 0;
-  padding: 0.35rem 0.2rem;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-.app-shell--ua-mobile .shell-inset {
-  margin-left: 3.5rem !important;
-}
-
-.app-shell--ua-mobile .shell-header {
-  display: flex !important;
-}
-
-.app-shell--ua-mobile .shell-menu-btn {
-  display: none !important;
-}
-
-.cloud-save-bar--rail {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  align-items: stretch;
-}
-
-.btn--rail {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  padding: 0.35rem 0.2rem;
-  line-height: 1.25;
-  box-sizing: border-box;
-}
-
-a.btn--rail {
-  display: flex;
-  text-decoration: none;
-}
-
-.cloud-save-rail-line {
-  display: block;
-  font-size: 0.65rem;
-  line-height: 1.35;
-  color: var(--muted-foreground);
-  text-align: center;
-  word-break: break-word;
-}
-
 /* ========== 主内容区 ========== */
 .main {
   flex: 1;
   padding: 1rem 1rem 2rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
   max-width: min(72rem, 100%);
   margin: 0 auto;
   width: 100%;
@@ -370,6 +282,14 @@ a.btn--rail {
 @media (min-width: 768px) {
   .main {
     padding: 1.5rem 1.5rem 2.5rem;
+    padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 
@@ -1027,6 +947,57 @@ input[type='number']::-webkit-inner-spin-button {
   .dashboard-notice-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* 看板宽表：小屏横向滑动，金额列不换行 */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  margin: 0 -0.35rem;
+  padding: 0 0.35rem 0.25rem;
+}
+
+.table-scroll-hint {
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 960px) {
+  .table-scroll-hint {
+    display: none;
+  }
+}
+
+.table-scroll > .table--forecast {
+  width: max-content;
+  min-width: 46rem;
+  max-width: none;
+}
+
+.table--forecast th,
+.table--forecast td {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-expand-cell .table-scroll--nested {
+  margin: 0.35rem 0.2rem 0.45rem;
+}
+
+.table-expand-cell .table-nested {
+  margin: 0;
+  width: max-content;
+  min-width: 34rem;
+  max-width: none;
+}
+
+.table-expand-cell .table-nested th,
+.table-expand-cell .table-nested td {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ========== 表格 ========== */

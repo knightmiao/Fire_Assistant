@@ -121,19 +121,21 @@ export function Dashboard() {
       {projection.yearly.length > 0 && (
         <section className="card">
           <h3>财务状态预测</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th style={{ width: '2rem' }} />
-                <th>年份</th>
-                <th>年末净资产</th>
-                <th>年收入</th>
-                <th>年支出</th>
-                <th>年储蓄</th>
-                <th>预估收益</th>
-              </tr>
-            </thead>
-            <tbody>
+          <p className="table-scroll-hint">列较多时，可左右滑动查看全部列。</p>
+          <div className="table-scroll">
+            <table className="table table--forecast">
+              <thead>
+                <tr>
+                  <th style={{ width: '2rem' }} />
+                  <th>年份</th>
+                  <th>年末净资产</th>
+                  <th>年收入</th>
+                  <th>年支出</th>
+                  <th>年储蓄</th>
+                  <th>预估收益</th>
+                </tr>
+              </thead>
+              <tbody>
               {projection.yearly.slice(0, 15).map((y) => {
                 const isExpanded = expandedYear === y.year;
                 const yearMonths = projection.yearlyMonths.find((ym) => ym.year === y.year)?.months ?? [];
@@ -157,38 +159,41 @@ export function Dashboard() {
                     {isExpanded && yearMonths.length > 0 && (
                       <tr key={`${y.year}-detail`}>
                         <td colSpan={7} className="table-expand-cell">
-                          <table className="table table-nested">
-                            <thead>
-                              <tr>
-                                <th>月份</th>
-                                <th>月末净资产</th>
-                                <th>月收入</th>
-                                <th>月支出</th>
-                                <th>月储蓄</th>
-                                <th>预估收益</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {yearMonths.map((mo) => (
-                                <tr key={mo.month}>
-                                  <td>{y.year}年{MONTH_NAMES[mo.month - 1]}</td>
-                                  <td>{formatCNY(mo.netWorth)}</td>
-                                  <td>{formatCNY(mo.income)}</td>
-                                  <td>{formatCNY(mo.expense)}</td>
-                                  <td>{formatCNY(mo.savings)}</td>
-                                  <td>{formatCNY(mo.investmentReturn)}</td>
+                          <div className="table-scroll table-scroll--nested">
+                            <table className="table table-nested">
+                              <thead>
+                                <tr>
+                                  <th>月份</th>
+                                  <th>月末净资产</th>
+                                  <th>月收入</th>
+                                  <th>月支出</th>
+                                  <th>月储蓄</th>
+                                  <th>预估收益</th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                {yearMonths.map((mo) => (
+                                  <tr key={mo.month}>
+                                    <td>{y.year}年{MONTH_NAMES[mo.month - 1]}</td>
+                                    <td>{formatCNY(mo.netWorth)}</td>
+                                    <td>{formatCNY(mo.income)}</td>
+                                    <td>{formatCNY(mo.expense)}</td>
+                                    <td>{formatCNY(mo.savings)}</td>
+                                    <td>{formatCNY(mo.investmentReturn)}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </td>
                       </tr>
                     )}
                   </Fragment>
                 );
               })}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
     </div>
